@@ -1,30 +1,171 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# A statically generated blog example using Next.js and Prismic
 
-## Getting Started
+This example showcases Next.js's [Static Generation](https://nextjs.org/docs/basic-features/pages) feature using [Prismic](https://prismic.io/) as the data source.
 
-First, run the development server:
+## Demo
+
+### [https://next-blog-prismic.now.sh/](https://next-blog-prismic.now.sh/)
+
+## Deploy your own
+
+Once you have access to [the environment variables you'll need](#step-5-set-up-environment-variables), deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/git?c=1&s=https://github.com/vercel/next.js/tree/canary/examples/cms-prismic&env=PRISMIC_API_TOKEN,PRISMIC_REPOSITORY_NAME&envDescription=Required%20to%20connect%20the%20app%20with%20Prismic&envLink=https://vercel.link/cms-prismic-env)
+
+### Related examples
+
+- [WordPress](/examples/cms-wordpress)
+- [DatoCMS](/examples/cms-datocms)
+- [Sanity](/examples/cms-sanity)
+- [TakeShape](/examples/cms-takeshape)
+- [Contentful](/examples/cms-contentful)
+- [Strapi](/examples/cms-strapi)
+- [Agility CMS](/examples/cms-agilitycms)
+- [Cosmic](/examples/cms-cosmic)
+- [ButterCMS](/examples/cms-buttercms)
+- [Storyblok](/examples/cms-storyblok)
+- [Kontent](/examples/cms-kontent)
+- [Blog Starter](/examples/blog-starter)
+
+## How to use
+
+Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
 
 ```bash
-npm run dev
+npx create-next-app --example cms-prismic cms-prismic-app
 # or
+yarn create next-app --example cms-prismic cms-prismic-app
+```
+
+## Configuration
+
+### Step 1. Create an account and a repository on Prismic
+
+First, [create an account on Prismic](https://prismic.io/).
+
+After creating an account, create a **repository** from the [dashboard](https://prismic.io/dashboard/) and assign to it any name of your liking.
+
+### Step 2. Create an `author` type
+
+From the repository page, create a new **custom type**:
+
+- The name should be `author`.
+
+Next, add these fields (you don't have to modify the settings):
+
+- `name` - **Key Text** field
+- `picture` - **Image** field
+
+Alternatively, you can copy the JSON in [`types/author.json`](types/author.json), then click on **JSON editor** and paste it there.
+
+Save the type and continue.
+
+### Step 3. Create a `post` type
+
+From the repository page, create a new **custom type**:
+
+- The name should be `post`.
+
+Next, add these fields (you don't have to modify the settings unless specified):
+
+- `title` - **Title** field
+- `content` - **Rich Text** field
+- `excerpt` - **Key Text** field
+- `coverimage` - **Image** field
+- `date` - **Date** field
+- `author` - **Content relationship** field, you may also add `author` to the **Constraint to custom type** option to only accept documents from the `author` type.
+- `slug` - **UID** field.
+
+Alternatively, you can copy the JSON in [`types/post.json`](types/post.json), then click on **JSON editor** and paste it there.
+
+Save the type and continue.
+
+### Step 4. Populate Content
+
+Go to the **Content** page, it's in the menu at the top left, then click on **Create new** and select the **author** type:
+
+- You just need **1 author document**.
+- Use dummy data for the text.
+- For the image, you can download one from [Unsplash](https://unsplash.com/).
+
+Next, select **Post** and create a new document.
+
+- We recommend creating at least **2 Post documents**.
+- Use dummy data for the text.
+- You can write markdown for the **content** field.
+- For images, you can download them from [Unsplash](https://unsplash.com/).
+- Pick the **author** you created earlier.
+
+**Important:** For each document, you need to click **Publish** after saving. If not, the document will be in the draft state.
+
+### Step 5. Set up environment variables
+
+Follow the instructions in [this post](https://intercom.help/prismicio/en/articles/1036153-generating-an-access-token) to generate a new access token.
+
+Next, copy the `.env.local.example` file in this directory to `.env.local` (which will be ignored by Git):
+
+```bash
+cp .env.local.example .env.local
+```
+
+Then set each variable on `.env.local`:
+
+- `PRISMIC_API_TOKEN` should be the **Permanent access token** you just created
+- `PRISMIC_REPOSITORY_NAME` is the name of your repository (the one in the URL)
+- `PRISMIC_REPOSITORY_LOCALE` is the locale of your repository. Defaults to `en-us`
+
+Your `.env.local` file should look like this:
+
+```bash
+PRISMIC_API_TOKEN=...
+PRISMIC_REPOSITORY_NAME=...
+PRISMIC_REPOSITORY_LOCALE=...
+```
+
+Make sure the locale matches your settings in the Prismic dashboard.
+
+### Step 6. Run Next.js in development mode
+
+```bash
+npm install
+npm run dev
+
+# or
+
+yarn install
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Your blog should be up and running on [http://localhost:3000](http://localhost:3000)! If it doesn't work, post on [GitHub discussions](https://github.com/vercel/next.js/discussions).
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### Step 7. Try preview mode
 
-## Learn More
+On your repository page, go to **Settings**, click on **Previews** and then **Create a New Preview** for development, fill the form like so:
 
-To learn more about Next.js, take a look at the following resources:
+- **Site Name**: may be anything, like `development`
+- **Domain of Your Application**: `http://localhost:3000`
+- **Link Resolver**: `/api/preview`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Once saved, go to one of the posts you've created and:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- **Update the title**. For example, you can add `[Draft]` in front of the title.
+- Click **Save**, but **DO NOT** click **Publish**. By doing this, the post will be in draft state.
+- Right next to the **Publish** button you should see the **Preview** button, displayed with an eye icon. Click on it!
 
-## Deploy on Vercel
+You should now be able to see the updated title. To exit preview mode, you can click on **Click here to exit preview mode** at the top of the page.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Step 8. Deploy on Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+You can deploy this app to the cloud with [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+
+#### Deploy Your Local Project
+
+To deploy your local project to Vercel, push it to GitHub/GitLab/Bitbucket and [import to Vercel](https://vercel.com/import/git?utm_source=github&utm_medium=readme&utm_campaign=next-example).
+
+**Important**: When you import your project on Vercel, make sure to click on **Environment Variables** and set them to match your `.env.local` file.
+
+#### Deploy from Our Template
+
+Alternatively, you can deploy using our template by clicking on the Deploy button below.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/git?c=1&s=https://github.com/vercel/next.js/tree/canary/examples/cms-prismic&env=PRISMIC_API_TOKEN,PRISMIC_REPOSITORY_NAME&envDescription=Required%20to%20connect%20the%20app%20with%20Prismic&envLink=https://vercel.link/cms-prismic-env)
