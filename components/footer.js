@@ -1,10 +1,31 @@
-import Container from './container'
-import { EXAMPLE_PATH } from '../lib/constants'
+import Link from "next/link";
+import Container from "./container";
+
+import { EXAMPLE_PATH } from "../lib/constants";
 
 export default function Footer() {
   return (
     <footer className="bg-accent-1 border-t border-accent-2">
       <Container>
+        <div className="w-56 bg-red-500 sm:bg-green-500 md:bg-blue-500 lg:bg-pink-500 xl:bg-teal-500">
+          a
+        </div>
+
+        <div className="max-w-sm mx-auto flex p-6 bg-white rounded-lg shadow-xl">
+          <div className="flex-shrink-0">
+            <img
+              className="h-12 w-12"
+              src="/img/logo.svg"
+              alt="ChitChat Logo"
+            />
+          </div>
+          <div className="ml-6 pt-1">
+            <h4 className="text-xl text-gray-900 leading-tight">ChitChat</h4>
+            <p className="text-base text-gray-600 leading-normal">
+              You have a new message!
+            </p>
+          </div>
+        </div>
         <div className="py-28 flex flex-col lg:flex-row items-center">
           <h3 className="text-4xl lg:text-5xl font-bold tracking-tighter leading-tight text-center lg:text-left mb-10 lg:mb-0 lg:pr-4 lg:w-1/2">
             Statically Generated with Next.js.
@@ -24,7 +45,10 @@ export default function Footer() {
             </a>
           </div>
         </div>
+        <Link href="/" locale="es">
+          <a>Spanish</a>
+        </Link>
       </Container>
     </footer>
-  )
+  );
 }

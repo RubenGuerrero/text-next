@@ -52,8 +52,13 @@ export default function Post({ post, morePosts, preview }) {
   );
 }
 
-export async function getStaticProps({ params, preview = false, previewData }) {
-  const data = await getPostAndMorePosts(params.slug, previewData);
+export async function getStaticProps({
+  params,
+  preview = false,
+  previewData,
+  locale,
+}) {
+  const data = await getPostAndMorePosts(params.slug, previewData, { locale });
 
   return {
     props: {
@@ -64,10 +69,25 @@ export async function getStaticProps({ params, preview = false, previewData }) {
   };
 }
 
+const langMatching = {
+  "en-gb": "en",
+  "es-es": "es",
+};
+
 export async function getStaticPaths() {
   const allPosts = await getAllPostsWithSlug();
+  const paths =
+    allPosts?.map(({ node }) => ({
+      params: {
+        slug: node._meta.uid,
+      },
+      locale: langMatching[node._meta.lang],
+    })) || [];
+
+  console.log("RRR", paths);
+
   return {
-    paths: allPosts?.map(({ node }) => `/posts/${node._meta.uid}`) || [],
+    paths,
     fallback: false,
   };
 }
