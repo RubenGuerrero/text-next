@@ -3,4 +3,8 @@ module.exports = {
     locales: ["es", "en"],
     defaultLocale: "es",
   },
+  exportPathMap: async function (defaultPathMap) {
+    console.log("RRR", defaultPathMap);
+    return {};
+  },
 };
